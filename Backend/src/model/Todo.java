@@ -1,0 +1,37 @@
+package model;
+
+public class Todo {
+    private String id;
+    private String title;
+    private boolean isCompleted;
+
+    public Todo(String todoId, String title, boolean isCompleted) {
+        this.id = todoId;
+        this.title = title;
+        this.isCompleted = isCompleted;
+    }
+    
+    public String getID(String id) {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    
+    public boolean getCompleted() {
+        return isCompleted;
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
+}
