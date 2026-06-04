@@ -10,10 +10,6 @@ public class Todo {
         this.title = title;
         this.isCompleted = isCompleted;
     }
-    
-    public String getID(String id) {
-        return id;
-    }
 
     public String getTitle() {
         return title;
@@ -33,5 +29,14 @@ public class Todo {
 
     public void setCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", completed=" + isCompleted +
+                '}';
     }
 }

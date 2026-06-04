@@ -7,27 +7,59 @@ import java.util.UUID;
 
 import model.Todo;
 
-import java.io.File;
-import java.util.ArrayList;
 
 import Repository.TodoRepository;
 
 public class TodoService {
-    private File todoFile =;
-    private List<Todo> todos = new ArrayList<>();
+    private TodoRepository repository;
 
-    public Todo CreateTodo(String title) {
-        UUID uuid = UUID.randomUUID();
-        String id = uuid.toString();
-        Todo todo = new Todo(id, title, false);
-
-        boolean saved = TodoRepository.store(todo,todoFile)
-        return todo;
+    public TodoService(TodoRepository repository) {
+        this.repository = repository;
     }
 
-    public List addTodo(Todo todo) {
-        todos.add(todo);
-        
-        return todos;
+    public Todo createTodo(String title) {
+        if(title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("This Title can not be empty");
+        }
+
+        String id = UUID.randomUUID().toString();
+        Todo todo = new Todo(id,title.trim(),false);
+
+        repository.save(todo);
+        return todo;
+    }
+    
+    public boolean updateTodo(String id, String newTitle, boolean newCompleted) {
+        if(newTitle == null || newTitle.trim().isEmpty()) {
+            throw new IllegalArgumentException("This Title can not be empty");
+        }
+        Todo todo = repository.findByID(id);
+
+        if(todo == null) {
+            return false;
+        }
+
+        todo.setTitle(newTitle.trim());
+        todo.setCompleted(newCompleted);
+        return true;
+    }
+
+    public boolean finishTodo(String id) {
+        Todo todo = repository.findByID(id);
+
+        if(todo == null) {
+            return false;
+        }
+
+        todo.setCompleted(true);
+        return true;
+    }
+
+    public boolean deleteTodo(String id) {
+        return repository.deleteByID(id);
+    }
+
+    public List<Todo> getAllTodos() {
+        return repository.findAll();
     }
 }
