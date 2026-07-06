@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 import Repository.TodoRepository;
 import Service.TodoService;
 import model.Todo;
@@ -7,23 +9,89 @@ public class Main {
         TodoRepository repository = new TodoRepository();
         TodoService service = new TodoService(repository);
 
-        Todo learnJava = service.createTodo("Learn Java");
-        Todo gym = service.createTodo("Go to gym");
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println(service.getAllTodos());
+        boolean running = true;
 
-        service.finishTodo(learnJava.getID());
-        service.updateTodo(gym.getID(), "Go to gym at 6PM", false);
+        while(running) {
+            System.out.println("==== TODOONG ====");
+            System.out.println("1. See Todo");
+            System.out.println("2. Add Todo");
+            System.out.println("3. Delete Todo");
+            System.out.println("4. Finish Todo");
+            System.out.println("5. Update Todo");
+            System.out.println("0. Exit");
+            System.out.print("Choice: ");
 
-        System.out.println(service.getAllTodos());
+            String choice = scanner.nextLine();
 
-        boolean deleted = service.deleteTodo(learnJava.getID());
-        System.out.println("Deleted: " + deleted);
+            if( choice.equals("1")) {
+                System.out.println(service.getAllTodos());
+            }
 
-        boolean deletedFake = service.deleteTodo("wrong-id");
-        System.out.println("Deleted fake id: " + deletedFake);
+            else if (choice.equals("2")) {
+                System.out.println("Enter Title: ");
+                String title = scanner.nextLine();
 
-        System.out.println(service.getAllTodos());
+                service.createTodo(title);
+                System.out.println("Todo Added");
+            }
+
+            else if(choice.equals("3")) {
+                System.out.println("Enter ID: ");
+                String id = scanner.nextLine();
+
+                boolean deleted = service.deleteTodo(id);
+
+                if(deleted) {
+                    System.out.println("Todo was deleted");
+                } else {
+                    System.out.println("Cannot find Todo");
+                }
+            }
+
+            else if(choice.equals("4")) {
+                System.out.println("Enter ID: ");
+                String id = scanner.nextLine();
+
+                boolean finished = service.finishTodo(id);
+                if(finished) {
+                    System.out.println("Todo finished");
+                } else {
+                    System.out.println("Cannot find Todo");
+                }
+            }
+
+            else if(choice.equals("5")) {
+                System.out.println("Enter ID: ");
+                String id = scanner.nextLine();
+
+                System.out.println("New Title: ");
+                String title = scanner.nextLine();
+
+                Todo todo = repository.findByID(id);
+
+                if(todo == null) {
+                    System.out.println("Cannot find Todo");
+                } else {
+                    boolean status = todo.getCompleted();
+                    boolean updated = service.updateTodo(id, title, status);
+
+                    if(updated) {
+                        System.out.println("Todo was updated");
+                    }
+                }
+
+            }
+            else if(choice.equals("0")) {
+                running = false;
+            }
+
+            else {
+                System.out.println("Invalid! Please enter again!");
+            }
+        }
+        scanner.close();
 
     }
 }
