@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 import Repository.TodoRepository;
@@ -8,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
         TodoRepository repository = new TodoRepository();
         TodoService service = new TodoService(repository);
+        
 
         Scanner scanner = new Scanner(System.in);
 
@@ -26,7 +28,7 @@ public class Main {
             String choice = scanner.nextLine();
 
             if( choice.equals("1")) {
-                System.out.println(service.getAllTodos());
+                System.out.println(todosToJson(service.getAllTodos()));
             }
 
             else if (choice.equals("2")) {
@@ -94,4 +96,18 @@ public class Main {
         scanner.close();
 
     }
+    public static String todosToJson(List<Todo> todos) {
+            if (todos.isEmpty()) {
+                return "[]";
+            }
+            String json = "[";
+            for(int i = 0; i < todos.size() - 1; i++) {
+                json = json + todos.get(i).toJson();
+                json = json + ",";
+            }
+            int n = todos.size() - 1;
+            json = json + todos.get(n).toJson();
+            json = json + "]";
+            return json;
+        }
 }

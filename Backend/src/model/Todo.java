@@ -39,4 +39,12 @@ public class Todo {
                 ", completed=" + isCompleted +
                 '}';
     }
+
+    public String toJson() {
+    return "{"
+            + "\"id\":\"" + id + "\","
+            + "\"title\":\"" + title + "\","
+            + "\"completed\":" + isCompleted
+            + "}";
+    }
 }

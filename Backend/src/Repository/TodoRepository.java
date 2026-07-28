@@ -9,6 +9,12 @@ import model.Todo;
 public class TodoRepository {
     private List<Todo> storage = new ArrayList<>();
 
+    public TodoRepository() {
+        storage.add(new Todo("1", "Hoc JSON", false));
+        storage.add(new Todo("2", "Hoc API", false));
+        storage.add(new Todo("3", "Hoc JavaScript", false));
+    }
+    
     //save a todo to List<Todo> storage
     public void save(Todo todo) {
         storage.add(todo);
