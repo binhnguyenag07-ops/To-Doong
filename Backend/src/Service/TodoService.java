@@ -29,7 +29,7 @@ public class TodoService {
         return todo;
     }
     
-    public boolean updateTodo(String id, String newTitle, boolean newCompleted) {
+    public boolean updateTodo(String id, String newTitle) {
         if(newTitle == null || newTitle.trim().isEmpty()) {
             throw new IllegalArgumentException("This Title can not be empty");
         }
@@ -40,7 +40,6 @@ public class TodoService {
         }
 
         todo.setTitle(newTitle.trim());
-        todo.setCompleted(newCompleted);
         return true;
     }
 

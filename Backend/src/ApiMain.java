@@ -21,14 +21,18 @@ public class ApiMain {
 
             if(method.equals("GET")) {
                 response = Main.todosToJson(service.getAllTodos());
-            } else if(method.equals("POST")) {
+            } 
+            
+            else if(method.equals("POST")) {
                 String title = new String(
                 exchange.getRequestBody().readAllBytes(),
                 StandardCharsets.UTF_8);
 
                 Todo newTodo = service.createTodo(title);
                 response = newTodo.toJson();
-            } else if (method.equals("DELETE")) {
+            } 
+            
+            else if (method.equals("DELETE")) {
                 String path = exchange.getRequestURI().getPath();
                 String prefix = "/todos/";
 
@@ -44,7 +48,30 @@ public class ApiMain {
                         response = "{\"error\":\"Todo not found\"}";
                     }
                 }
-            }else {
+            } 
+            
+            else if(method.equals("PUT")) {
+                String path = exchange.getRequestURI().getPath();
+                String prefix = "/todos/";
+
+                if (!path.startsWith(prefix) || path.length() <= prefix.length()) {
+                    response = "{\"error\":\"Todo ID is required\"}";
+                } else {
+                    String id = path.substring(prefix.length());
+                    String title = new String(
+                        exchange.getRequestBody().readAllBytes(),
+                        StandardCharsets.UTF_8);
+                    boolean updated = service.updateTodo(id, title);
+
+                    if (updated) {
+                        response = "{\"message\":\"Todo updated\"}";
+                    } else {
+                        response = "{\"error\":\"Todo not found\"}";
+                    }
+                }
+            }
+            
+            else {
                 response = "{\"error\":\"Method not allowed\"}";
             }
             byte[] data = response.getBytes(StandardCharsets.UTF_8);
