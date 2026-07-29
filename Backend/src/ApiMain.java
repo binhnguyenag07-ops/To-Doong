@@ -11,6 +11,9 @@ public class ApiMain {
             HttpServer.create(new InetSocketAddress(8080), 0);
         TodoRepository repository = new TodoRepository();
         TodoService service = new TodoService(repository);
+        service.createTodo("Learning Java");
+        service.createTodo("Learning Ielts");
+        service.createTodo("Do Gym");
         server.createContext("/todos", exchange -> {
             String method = exchange.getRequestMethod();
             System.out.println("Request method: " + method);
@@ -25,7 +28,23 @@ public class ApiMain {
 
                 Todo newTodo = service.createTodo(title);
                 response = newTodo.toJson();
-            } else {
+            } else if (method.equals("DELETE")) {
+                String path = exchange.getRequestURI().getPath();
+                String prefix = "/todos/";
+
+                if (!path.startsWith(prefix) || path.length() <= prefix.length()) {
+                    response = "{\"error\":\"Todo ID is required\"}";
+                } else {
+                    String id = path.substring(prefix.length());
+                    boolean deleted = service.deleteTodo(id);
+
+                    if (deleted) {
+                        response = "{\"message\":\"Todo deleted\"}";
+                    } else {
+                        response = "{\"error\":\"Todo not found\"}";
+                    }
+                }
+            }else {
                 response = "{\"error\":\"Method not allowed\"}";
             }
             byte[] data = response.getBytes(StandardCharsets.UTF_8);
