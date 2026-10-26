@@ -3,9 +3,12 @@ const message = document.querySelector("#message");
 const todoForm = document.querySelector("#todo-form");
 const todoInput = document.querySelector("#todo-title");
 const addTodoButton = document.querySelector("#add-todo-button");
+const todoCount = document.querySelector("#todo-count");
 
 function renderTodos(todos) {
     todoList.textContent = "";
+    
+    todoCount.textContent = "Total : " + todos.length + " todos";
 
     for (const todo of todos) {
         const item = document.createElement("li");
@@ -148,6 +151,7 @@ function renderTodos(todos) {
 });
 
         item.append(editButton);
+        
         todoList.append(item);
     }
 }
