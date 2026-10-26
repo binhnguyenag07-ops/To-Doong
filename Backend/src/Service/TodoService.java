@@ -43,14 +43,14 @@ public class TodoService {
         return true;
     }
 
-    public boolean finishTodo(String id) {
+    public boolean setTodoCompleted(String id, boolean completed) {
         Todo todo = repository.findByID(id);
 
         if(todo == null) {
             return false;
         }
 
-        todo.setCompleted(true);
+        todo.setCompleted(completed);
         return true;
     }
 

@@ -56,7 +56,7 @@ public class Main {
                 System.out.println("Enter ID: ");
                 String id = scanner.nextLine();
 
-                boolean finished = service.finishTodo(id);
+                boolean finished = service.setTodoCompleted(id, true);
                 if(finished) {
                     System.out.println("Todo finished");
                 } else {
@@ -76,8 +76,7 @@ public class Main {
                 if(todo == null) {
                     System.out.println("Cannot find Todo");
                 } else {
-                    boolean status = todo.getCompleted();
-                    boolean updated = service.updateTodo(id, title, status);
+                    boolean updated = service.updateTodo(id, title);
 
                     if(updated) {
                         System.out.println("Todo was updated");
