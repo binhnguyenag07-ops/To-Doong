@@ -52,6 +52,60 @@ function renderTodos(todos) {
         
         item.append(deleteButton);
 
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.textContent = "Edit";
+
+        editButton.addEventListener("click", async function () {
+        const input = window.prompt("Nhập tên công việc mới:", todo.title);
+
+        if (input === null) {
+            return;
+        }
+
+        const newTitle = input.trim();
+
+        if (newTitle === "") {
+            message.textContent = "Title cannot be empty";
+            return;
+        }
+
+        editButton.disabled = true;
+        message.textContent = "Updating todo...";
+
+        try {
+            const response = await fetch(
+                `http://localhost:8080/todos/${todo.id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "text/plain;charset=UTF-8"
+                    },
+                    body: newTitle
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.error) {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            message.textContent = "Cannot update todo";
+            console.error(error);
+            return;
+        } finally {
+            editButton.disabled = false;
+        }
+
+        await loadTodos();
+});
+
+        item.append(editButton);
         todoList.append(item);
     }
 }
