@@ -1,5 +1,7 @@
 const todoList = document.querySelector("#todo-list");
-
+const message = document.querySelector("#message");
+const todoForm = document.querySelector("#todo-form");
+const todoInput = document.querySelector("#todo-title");
 
 function renderTodos(todos) {
     todoList.textContent = "";
@@ -16,39 +18,59 @@ function renderTodos(todos) {
 }
 
 async function loadTodos() {
+    message.textContent = "Loading...";
+    try {
     const response = await fetch("http://localhost:8080/todos");
+
+    if(!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+
     const todos = await response.json();
 
     renderTodos(todos);
+
+    message.textContent = "";
+    } catch (error) {
+        message.textContent = "Cannot load the todo list";
+        console.error(error);
+    }
+
 }
 
 loadTodos();
 
-const todoForm = document.querySelector("#todo-form");
-const todoInput = document.querySelector("#todo-title");
  
 todoForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const title = todoInput.value.trim() ;
     if(title === "") {
-        console.log("Invalid title");
+        message.textContent = "Title cannot be empty";
         return;
     }
     
-    const response = await fetch("http://localhost:8080/todos", {
-        method: "POST",
-        headers: {
-            "Content-Type": "text/plain;charset=UTF-8"
-        },
-        body: title
-    });
+    message.textContent = "Adding todo...";
 
-    if(!response.ok) {
-        console.log("Adding todo was failed:" + response.status);
+    try {
+        const response = await fetch("http://localhost:8080/todos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain;charset=UTF-8"
+            },
+            body: title
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        todoInput.value = "";
+    } catch (error) {
+        message.textContent = "Cannot add todo";
+        console.error(error);
         return;
     }
 
-    todoInput.value = "";
     await loadTodos();
 })
