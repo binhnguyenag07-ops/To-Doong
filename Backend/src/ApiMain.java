@@ -15,6 +15,10 @@ public class ApiMain {
         service.createTodo("Learning Ielts");
         service.createTodo("Do Gym");
         server.createContext("/todos", exchange -> {
+            exchange.getResponseHeaders().set(
+            "Access-Control-Allow-Origin",
+            "http://127.0.0.1:5500"
+        );
             String method = exchange.getRequestMethod();
             System.out.println("Request method: " + method);
             String response;
