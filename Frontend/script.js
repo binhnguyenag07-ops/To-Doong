@@ -16,6 +16,48 @@ function renderTodos(todos) {
             item.textContent = "✅ " + todo.title;
         }
 
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = todo.completed;
+        checkbox.addEventListener("change", async function () {
+        checkbox.disabled = true;
+        message.textContent = "Updating status...";
+
+        try {
+            const response = await fetch(
+                `http://localhost:8080/todos/${todo.id}/completed`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "text/plain;charset=UTF-8"
+                    },
+                    body: String(checkbox.checked)
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.error) {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            checkbox.checked = todo.completed;
+            message.textContent = "Cannot update status";
+            console.error(error);
+            return;
+        } finally {
+            checkbox.disabled = false;
+        }
+
+        await loadTodos();
+    });
+
+        item.append(checkbox);
+
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
         deleteButton.textContent = "Delete";

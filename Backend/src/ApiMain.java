@@ -71,20 +71,45 @@ public class ApiMain {
                 if (!path.startsWith(prefix) || path.length() <= prefix.length()) {
                     response = "{\"error\":\"Todo ID is required\"}";
                 } else {
-                    String id = path.substring(prefix.length());
-                    String title = new String(
-                        exchange.getRequestBody().readAllBytes(),
-                        StandardCharsets.UTF_8);
-                    boolean updated = service.updateTodo(id, title);
+                    String target = path.substring(prefix.length());
 
-                    if (updated) {
-                        response = "{\"message\":\"Todo updated\"}";
+                    String body = new String(
+                        exchange.getRequestBody().readAllBytes(),
+                        StandardCharsets.UTF_8
+                    );
+
+                    if (target.endsWith("/completed")) {
+                        String id = target.substring(
+                            0, target.length() - "/completed".length()
+                        );
+
+                        String value = body.trim();
+
+                        if (id.isEmpty()) {
+                            response = "{\"error\":\"Todo ID is required\"}";
+                        } else if (!value.equals("true") && !value.equals("false")) {
+                            response = "{\"error\":\"Completed must be true or false\"}";
+                        } else {
+                            boolean completed = Boolean.parseBoolean(value);
+                            boolean updated = service.setTodoCompleted(id, completed);
+
+                            if (updated) {
+                                response = "{\"message\":\"Todo status updated\"}";
+                            } else {
+                                response = "{\"error\":\"Todo not found\"}";
+                            }
+                        }
                     } else {
-                        response = "{\"error\":\"Todo not found\"}";
+                        boolean updated = service.updateTodo(target, body);
+
+                        if (updated) {
+                            response = "{\"message\":\"Todo updated\"}";
+                        } else {
+                            response = "{\"error\":\"Todo not found\"}";
+                        }
                     }
                 }
             }
-            
             else {
                 response = "{\"error\":\"Method not allowed\"}";
             }
