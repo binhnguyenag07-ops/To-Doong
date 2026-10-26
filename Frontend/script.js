@@ -2,6 +2,7 @@ const todoList = document.querySelector("#todo-list");
 const message = document.querySelector("#message");
 const todoForm = document.querySelector("#todo-form");
 const todoInput = document.querySelector("#todo-title");
+const addTodoButton = document.querySelector("#add-todo-button");
 
 function renderTodos(todos) {
     todoList.textContent = "";
@@ -35,7 +36,6 @@ async function loadTodos() {
         message.textContent = "Cannot load the todo list";
         console.error(error);
     }
-
 }
 
 loadTodos();
@@ -50,6 +50,12 @@ todoForm.addEventListener("submit", async function(event) {
         return;
     }
     
+    if (addTodoButton.disabled) {
+        return;
+    }
+
+    addTodoButton.disabled = true;
+
     message.textContent = "Adding todo...";
 
     try {
@@ -70,6 +76,8 @@ todoForm.addEventListener("submit", async function(event) {
         message.textContent = "Cannot add todo";
         console.error(error);
         return;
+    } finally {
+        addTodoButton.disabled = false;
     }
 
     await loadTodos();
