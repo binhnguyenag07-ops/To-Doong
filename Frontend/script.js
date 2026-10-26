@@ -1,9 +1,5 @@
 const todoList = document.querySelector("#todo-list");
-const todos = [
-    { title: "Learn JavaScript", completed: true },
-    { title: "Do Gym", completed: true },
-    { title: "Learn IELTS", completed: false }
-];
+
 
 function renderTodos(todos) {
     todoList.textContent = "";
@@ -19,5 +15,11 @@ function renderTodos(todos) {
     }
 }
 
-renderTodos(todos);
+async function loadTodos() {
+    const response = await fetch("http://localhost:8080/todos");
+    const todos = await response.json();
 
+    renderTodos(todos);
+}
+
+loadTodos();
