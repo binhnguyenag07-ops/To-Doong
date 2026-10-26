@@ -1,12 +1,23 @@
 const todoList = document.querySelector("#todo-list");
-const titles = ["Learn JavaScript", "Do Gym", "Learn IELTS"];
+const todos = [
+    { title: "Learn JavaScript", completed: true },
+    { title: "Do Gym", completed: true },
+    { title: "Learn IELTS", completed: false }
+];
 
-function renderTodos(titles) {
-    for (const title of titles) {
+function renderTodos(todos) {
+    todoList.textContent = "";
+
+    for (const todo of todos) {
         const item = document.createElement("li");
-        item.textContent = title;
+        if(todo.completed === false) {
+            item.textContent = todo.title;
+        } else {
+            item.textContent = "✅ " + todo.title;
+        }
         todoList.append(item);
     }
 }
 
-renderTodos(titles);
+renderTodos(todos);
+
