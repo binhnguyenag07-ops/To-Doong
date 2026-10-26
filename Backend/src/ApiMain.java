@@ -19,6 +19,16 @@ public class ApiMain {
             "Access-Control-Allow-Origin",
             "http://127.0.0.1:5500"
         );
+            exchange.getResponseHeaders().set(
+            "Access-Control-Allow-Methods",
+            "GET, POST, PUT, DELETE, OPTIONS"
+        );
+
+        if (exchange.getRequestMethod().equals("OPTIONS")) {
+            exchange.sendResponseHeaders(204, -1);
+            exchange.close();
+            return;
+        }
             String method = exchange.getRequestMethod();
             System.out.println("Request method: " + method);
             String response;

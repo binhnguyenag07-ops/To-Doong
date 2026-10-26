@@ -9,11 +9,49 @@ function renderTodos(todos) {
 
     for (const todo of todos) {
         const item = document.createElement("li");
+
         if(todo.completed === false) {
             item.textContent = todo.title;
         } else {
             item.textContent = "✅ " + todo.title;
         }
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete";
+        
+        deleteButton.addEventListener("click", async function () {
+        deleteButton.disabled = true;
+        message.textContent = "Deleting todo...";
+
+        try {
+            const response = await fetch(
+                `http://localhost:8080/todos/${todo.id}`,
+                { method: "DELETE" }
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.error) {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            message.textContent = "Cannot delete todo";
+            console.error(error);
+            return;
+        } finally {
+            deleteButton.disabled = false;
+        }
+
+        await loadTodos();
+    });
+        
+        item.append(deleteButton);
+
         todoList.append(item);
     }
 }
