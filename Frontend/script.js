@@ -7,8 +7,8 @@ const todoCount = document.querySelector("#todo-count");
 
 function renderTodos(todos) {
     todoList.textContent = "";
-    
-    todoCount.textContent = "Total : " + todos.length + " todos";
+
+    let completedCount = 0;
 
     for (const todo of todos) {
         const item = document.createElement("li");
@@ -17,6 +17,7 @@ function renderTodos(todos) {
             item.textContent = todo.title;
         } else {
             item.textContent = "✅ " + todo.title;
+            completedCount++;
         }
 
         const checkbox = document.createElement("input");
@@ -58,6 +59,7 @@ function renderTodos(todos) {
 
         await loadTodos();
     });
+    
 
         item.append(checkbox);
 
@@ -154,6 +156,7 @@ function renderTodos(todos) {
         
         todoList.append(item);
     }
+    todoCount.textContent = "Total : " + todos.length + " todos" + "  |  " + "Completed: " + completedCount;
 }
 
 async function loadTodos() {
