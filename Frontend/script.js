@@ -46,7 +46,7 @@ todoForm.addEventListener("submit", async function(event) {
 
     const title = todoInput.value.trim() ;
     if(title === "") {
-        console.log("Invalid title");
+        message.textContent = "Title cannot be empty";
         return;
     }
     
