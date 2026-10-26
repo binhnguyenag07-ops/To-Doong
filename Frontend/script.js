@@ -23,3 +23,32 @@ async function loadTodos() {
 }
 
 loadTodos();
+
+const todoForm = document.querySelector("#todo-form");
+const todoInput = document.querySelector("#todo-title");
+ 
+todoForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const title = todoInput.value.trim() ;
+    if(title === "") {
+        console.log("Invalid title");
+        return;
+    }
+    
+    const response = await fetch("http://localhost:8080/todos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain;charset=UTF-8"
+        },
+        body: title
+    });
+
+    if(!response.ok) {
+        console.log("Adding todo was failed:" + response.status);
+        return;
+    }
+
+    todoInput.value = "";
+    await loadTodos();
+})
