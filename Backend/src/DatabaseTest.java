@@ -25,6 +25,21 @@ public class DatabaseTest {
 
             repository.save(newTodo);
 
+            boolean updated = repository.updateTitle(
+                    newTodo.getID(),
+                    "Đã sửa tên qua Java");
+
+            System.out.println("Cap nhat thanh cong: " + updated);
+
+            Todo afterUpdate = repository.findByID(newTodo.getID());
+            System.out.println("Todo sau khi sua: " + afterUpdate);
+
+            boolean missingUpdated = repository.updateTitle(
+                    "id-khong-ton-tai",
+                    "Tên mới");
+
+            System.out.println("Cap nhat ID khong ton tai: " + missingUpdated);
+
             Todo found = repository.findByID(newTodo.getID());
             System.out.println("Tim theo ID: " + found);
 

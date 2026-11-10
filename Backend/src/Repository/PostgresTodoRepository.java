@@ -75,4 +75,18 @@ public class PostgresTodoRepository {
             }
         }
     }
+
+    public boolean updateTitle(String id, String title) throws SQLException {
+        String sql = "UPDATE todos SET title = ? WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.open(password);
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, title);
+            statement.setString(2, id);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+        }
+    }
 }
