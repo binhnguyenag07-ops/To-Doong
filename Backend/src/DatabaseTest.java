@@ -47,9 +47,25 @@ public class DatabaseTest {
             System.out.println("ID khong ton tai: " + missing);
 
             System.out.println("Da luu Todo vao PostgreSQL!");
-            List<Todo> todos = repository.findAll();
+            
 
             System.out.println("Doc database thanh cong!");
+
+            boolean completedUpdated = repository.updateCompleted(newTodo.getID(), true);
+
+            System.out.println("Danh dau hoan thanh: " + completedUpdated);
+            System.out.println(repository.findByID(newTodo.getID()));
+
+            boolean reopened = repository.updateCompleted(newTodo.getID(), false);
+
+            System.out.println("Bo hoan thanh: " + reopened);
+            System.out.println(repository.findByID(newTodo.getID()));
+
+            boolean missingStatusUpdated = repository.updateCompleted("id-khong-ton-tai", true);
+
+            System.out.println("ID khong ton tai: " + missingStatusUpdated);
+
+            List<Todo> todos = repository.findAll();    
 
             for (Todo todo : todos) {
                 System.out.println(todo);

@@ -89,4 +89,20 @@ public class PostgresTodoRepository {
             return rows > 0;
         }
     }
+
+    public boolean updateCompleted(String id, boolean completed)
+            throws SQLException {
+
+        String sql = "UPDATE todos SET completed = ? WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.open(password);
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setBoolean(1, completed);
+            statement.setString(2, id);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+        }
+    }
 }
