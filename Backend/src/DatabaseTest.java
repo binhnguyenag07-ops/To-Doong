@@ -47,7 +47,6 @@ public class DatabaseTest {
             System.out.println("ID khong ton tai: " + missing);
 
             System.out.println("Da luu Todo vao PostgreSQL!");
-            
 
             System.out.println("Doc database thanh cong!");
 
@@ -65,7 +64,16 @@ public class DatabaseTest {
 
             System.out.println("ID khong ton tai: " + missingStatusUpdated);
 
-            List<Todo> todos = repository.findAll();    
+            boolean deleted = repository.deleteByID(newTodo.getID());
+            System.out.println("Xoa Todo: " + deleted);
+
+            Todo afterDelete = repository.findByID(newTodo.getID());
+            System.out.println("Tim lai sau khi xoa: " + afterDelete);
+
+            boolean deletedAgain = repository.deleteByID(newTodo.getID());
+            System.out.println("Xoa lan hai: " + deletedAgain);
+
+            List<Todo> todos = repository.findAll();
 
             for (Todo todo : todos) {
                 System.out.println(todo);

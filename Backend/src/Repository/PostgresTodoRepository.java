@@ -105,4 +105,17 @@ public class PostgresTodoRepository {
             return rows > 0;
         }
     }
+
+    public boolean deleteByID(String id) throws SQLException {
+        String sql = "DELETE FROM todos WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.open(password);
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, id);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+        }
+    }
 }
