@@ -1,16 +1,14 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.Todo;
+import config.DatabaseConnection;
 
 public class DatabaseTest {
     public static void main(String[] args) {
-        String url = "jdbc:postgresql://localhost:5432/todoong";
-        String username = "postgres";
 
         if (System.console() == null) {
             System.out.println("Hay chay bang terminal theo huong dan.");
@@ -20,7 +18,7 @@ public class DatabaseTest {
         String password = new String(
                 System.console().readPassword("Mat khau PostgreSQL: "));
 
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+        try (Connection connection = DatabaseConnection.open(password)) {
 
             System.out.println("Ket noi thanh cong!");
             System.out.println("Database: " + connection.getCatalog());
