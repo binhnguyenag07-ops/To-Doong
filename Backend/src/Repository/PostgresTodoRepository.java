@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostgresTodoRepository {
+public class PostgresTodoRepository implements TodoStore{
     private final String password;
 
     public PostgresTodoRepository(String password) {

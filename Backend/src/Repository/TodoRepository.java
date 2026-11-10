@@ -5,20 +5,18 @@ import java.util.List;
 
 import model.Todo;
 
-
-public class TodoRepository {
+public class TodoRepository implements TodoStore {
     private List<Todo> storage = new ArrayList<>();
 
-    
-    //save a todo to List<Todo> storage
+    // save a todo to List<Todo> storage
     public void save(Todo todo) {
         storage.add(todo);
     }
 
-    //find a todo in storage by its ID
+    // find a todo in storage by its ID
     public Todo findByID(String id) {
-        for(Todo todo: storage) {
-            if(todo.getID().equals(id)) {
+        for (Todo todo : storage) {
+            if (todo.getID().equals(id)) {
                 return todo;
             }
         }
@@ -26,11 +24,11 @@ public class TodoRepository {
         return null;
     }
 
-    //find and remove a todo in storage
+    // find and remove a todo in storage
     public boolean deleteByID(String id) {
         Todo todo = findByID(id);
-        
-        if(todo == null) {
+
+        if (todo == null) {
             return false;
         }
 
@@ -38,8 +36,30 @@ public class TodoRepository {
         return true;
     }
 
-    //the current storage
+    // the current storage
     public List<Todo> findAll() {
         return storage;
+    }
+
+    public boolean updateTitle(String id, String title) {
+        Todo todo = findByID(id);
+
+        if (todo == null) {
+            return false;
+        }
+
+        todo.setTitle(title);
+        return true;
+    }
+
+    public boolean updateCompleted(String id, boolean completed) {
+        Todo todo = findByID(id);
+
+        if (todo == null) {
+            return false;
+        }
+
+        todo.setCompleted(completed);
+        return true;
     }
 }
