@@ -13,7 +13,7 @@ function renderTodos(todos) {
     for (const todo of todos) {
         const item = document.createElement("li");
 
-        if(todo.completed === false) {
+        if (todo.completed === false) {
             item.textContent = todo.title;
         } else {
             item.textContent = "✅ " + todo.title;
@@ -24,79 +24,79 @@ function renderTodos(todos) {
         checkbox.type = "checkbox";
         checkbox.checked = todo.completed;
         checkbox.addEventListener("change", async function () {
-        checkbox.disabled = true;
-        message.textContent = "Updating status...";
+            checkbox.disabled = true;
+            message.textContent = "Updating status...";
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/todos/${todo.id}/completed`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "text/plain;charset=UTF-8"
-                    },
-                    body: String(checkbox.checked)
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/todos/${todo.id}/completed`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "text/plain;charset=UTF-8"
+                        },
+                        body: String(checkbox.checked)
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
-            );
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                checkbox.checked = todo.completed;
+                message.textContent = "Cannot update status";
+                console.error(error);
+                return;
+            } finally {
+                checkbox.disabled = false;
             }
 
-            const result = await response.json();
+            await loadTodos();
+        });
 
-            if (result.error) {
-                throw new Error(result.error);
-            }
-        } catch (error) {
-            checkbox.checked = todo.completed;
-            message.textContent = "Cannot update status";
-            console.error(error);
-            return;
-        } finally {
-            checkbox.disabled = false;
-        }
-
-        await loadTodos();
-    });
-    
 
         item.append(checkbox);
 
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
         deleteButton.textContent = "Delete";
-        
+
         deleteButton.addEventListener("click", async function () {
-        deleteButton.disabled = true;
-        message.textContent = "Deleting todo...";
+            deleteButton.disabled = true;
+            message.textContent = "Deleting todo...";
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/todos/${todo.id}`,
-                { method: "DELETE" }
-            );
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/todos/${todo.id}`,
+                    { method: "DELETE" }
+                );
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                message.textContent = "Cannot delete todo";
+                console.error(error);
+                return;
+            } finally {
+                deleteButton.disabled = false;
             }
 
-            const result = await response.json();
+            await loadTodos();
+        });
 
-            if (result.error) {
-                throw new Error(result.error);
-            }
-        } catch (error) {
-            message.textContent = "Cannot delete todo";
-            console.error(error);
-            return;
-        } finally {
-            deleteButton.disabled = false;
-        }
-
-        await loadTodos();
-    });
-        
         item.append(deleteButton);
 
         const editButton = document.createElement("button");
@@ -104,56 +104,56 @@ function renderTodos(todos) {
         editButton.textContent = "Edit";
 
         editButton.addEventListener("click", async function () {
-        const input = window.prompt("Nhập tên công việc mới:", todo.title);
+            const input = window.prompt("Enter the new todo title:", todo.title);
 
-        if (input === null) {
-            return;
-        }
+            if (input === null) {
+                return;
+            }
 
-        const newTitle = input.trim();
+            const newTitle = input.trim();
 
-        if (newTitle === "") {
-            message.textContent = "Title cannot be empty";
-            return;
-        }
+            if (newTitle === "") {
+                message.textContent = "Title cannot be empty";
+                return;
+            }
 
-        editButton.disabled = true;
-        message.textContent = "Updating todo...";
+            editButton.disabled = true;
+            message.textContent = "Updating todo...";
 
-        try {
-            const response = await fetch(
-                `http://localhost:8080/todos/${todo.id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "text/plain;charset=UTF-8"
-                    },
-                    body: newTitle
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/todos/${todo.id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "text/plain;charset=UTF-8"
+                        },
+                        body: newTitle
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
-            );
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                message.textContent = "Cannot update todo";
+                console.error(error);
+                return;
+            } finally {
+                editButton.disabled = false;
             }
 
-            const result = await response.json();
-
-            if (result.error) {
-                throw new Error(result.error);
-            }
-        } catch (error) {
-            message.textContent = "Cannot update todo";
-            console.error(error);
-            return;
-        } finally {
-            editButton.disabled = false;
-        }
-
-        await loadTodos();
-});
+            await loadTodos();
+        });
 
         item.append(editButton);
-        
+
         todoList.append(item);
     }
     todoCount.textContent = "Total : " + todos.length + " todos" + "  |  " + "Completed: " + completedCount;
@@ -162,17 +162,17 @@ function renderTodos(todos) {
 async function loadTodos() {
     message.textContent = "Loading...";
     try {
-    const response = await fetch("http://localhost:8080/todos");
+        const response = await fetch("http://localhost:8080/todos");
 
-    if(!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-    const todos = await response.json();
+        const todos = await response.json();
 
-    renderTodos(todos);
+        renderTodos(todos);
 
-    message.textContent = "";
+        message.textContent = "";
     } catch (error) {
         message.textContent = "Cannot load the todo list";
         console.error(error);
@@ -181,16 +181,16 @@ async function loadTodos() {
 
 loadTodos();
 
- 
-todoForm.addEventListener("submit", async function(event) {
+
+todoForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const title = todoInput.value.trim() ;
-    if(title === "") {
+    const title = todoInput.value.trim();
+    if (title === "") {
         message.textContent = "Title cannot be empty";
         return;
     }
-    
+
     if (addTodoButton.disabled) {
         return;
     }
