@@ -1,12 +1,12 @@
 import java.util.List;
 import java.util.Scanner;
-
+import java.sql.SQLException;
 import Repository.TodoRepository;
 import Service.TodoService;
 import model.Todo;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         TodoRepository repository = new TodoRepository();
         TodoService service = new TodoService(repository);
         
