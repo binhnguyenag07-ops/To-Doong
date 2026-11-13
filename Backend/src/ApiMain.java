@@ -2,10 +2,11 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import com.sun.net.httpserver.HttpServer;
 import Repository.PostgresTodoRepository;
-import Repository.TodoRepository;
 import Service.TodoService;
 import model.Todo;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.StringJoiner;
 
 public class ApiMain {
     public static void main(String[] args) throws Exception {
@@ -43,7 +44,7 @@ public class ApiMain {
 
             try {
                 if (method.equals("GET")) {
-                    response = Main.todosToJson(service.getAllTodos());
+                    response = todosToJson(service.getAllTodos());
                 }
 
                 else if (method.equals("POST")) {
@@ -134,5 +135,13 @@ public class ApiMain {
 
         server.start();
         System.out.println("Server is running at http://localhost:8080/todos");
+    }
+
+    private static String todosToJson(List<Todo> todos) {
+        StringJoiner json = new StringJoiner(",", "[", "]");
+        for (Todo todo : todos) {
+            json.add(todo.toJson());
+        }
+        return json.toString();
     }
 }
