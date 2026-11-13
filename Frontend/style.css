@@ -1,0 +1,256 @@
+:root {
+    color-scheme: light;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #292b28;
+    background: #f7f7f2;
+    font-synthesis: none;
+    line-height: 1.5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 80px 24px;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.todo-app {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.app-header {
+    margin-bottom: 44px;
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+    color: #66695f;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(36px, 6vw, 48px);
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    line-height: 1.15;
+}
+
+h1 span {
+    color: #718064;
+}
+
+.subtitle {
+    margin: 12px 0 0;
+    color: #66695f;
+}
+
+#todo-form > label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+#todo-title {
+    flex: 1;
+    min-width: 0;
+    padding: 13px 16px;
+    border: 1px solid #d9dcd2;
+    border-radius: 8px;
+    background: #fff;
+    color: inherit;
+}
+
+#todo-title::placeholder {
+    color: #777b70;
+}
+
+#add-todo-button {
+    padding: 13px 22px;
+    border: 1px solid #30382c;
+    border-radius: 8px;
+    background: #30382c;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#add-todo-button:hover {
+    background: #424d3b;
+}
+
+:where(button, input):focus-visible {
+    outline: 2px solid #697e59;
+    outline-offset: 3px;
+}
+
+button:disabled,
+input:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+#message {
+    min-height: 21px;
+    margin: 10px 0 24px;
+    color: #66695f;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.list-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#todo-count,
+.task-count {
+    margin: 0;
+    color: #66695f;
+    font-size: 12px;
+}
+
+.task-section + .task-section {
+    margin-top: 36px;
+}
+
+.task-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid #d9dcd2;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e1e3db;
+}
+
+.todo-label {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.todo-label input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #526546;
+    cursor: pointer;
+}
+
+.todo-text {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.is-completed {
+    padding-inline: 12px;
+    border-bottom-color: #d3e2cc;
+    background: #eaf3e5;
+}
+
+.is-completed .todo-text {
+    color: #354d2c;
+}
+
+.todo-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+}
+
+.todo-actions button {
+    min-height: 36px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: #66695f;
+    font-size: 13px;
+}
+
+.todo-actions button:hover {
+    background: #eaece4;
+    color: #292b28;
+}
+
+.todo-actions .delete-button:hover {
+    background: #f2e8e4;
+    color: #934937;
+}
+
+.empty-state {
+    padding: 36px 20px;
+    border-bottom: 1px solid #e1e3db;
+    color: #66695f;
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 40px 20px;
+    }
+
+    .app-header {
+        margin-bottom: 32px;
+    }
+
+    #add-todo-button {
+        padding-inline: 16px;
+    }
+
+    .todo-item {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .todo-label {
+        flex-basis: 100%;
+    }
+
+    .todo-actions {
+        margin-left: 30px;
+    }
+}

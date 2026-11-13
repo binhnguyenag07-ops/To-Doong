@@ -1,20 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>TODOong</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <h1>ToDoong</h1>
-    <form id="todo-form">
-        <input id="todo-title" type="text" placeholder="Enter Todo..." required>
-        <button id="add-todo-button" type="submit">Add</button>
-    </form>
-    <p id="message" role="status"></p>
-    <p id="todo-count"></p>
-    <ul id="todo-list"></ul>
+    <main class="todo-app">
+        <header class="app-header">
+            <p class="eyebrow">A LITTLE SPACE TO GET THINGS DONE</p>
+            <h1>ToDoong<span>.</span></h1>
+            <p class="subtitle">One task at a time.</p>
+        </header>
+
+        <form id="todo-form">
+            <label for="todo-title">What's on your list?</label>
+            <div class="form-row">
+                <input id="todo-title" type="text" placeholder="Add a new task..." required autocomplete="off">
+                <button id="add-todo-button" type="submit">Add task</button>
+            </div>
+        </form>
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <section class="task-section" aria-labelledby="task-heading">
+            <div class="list-header">
+                <h2 id="task-heading">To do</h2>
+                <p id="todo-count" aria-live="polite"></p>
+            </div>
+            <ul id="todo-list" class="task-list"></ul>
+        </section>
+
+        <section class="task-section" aria-labelledby="completed-heading">
+            <div class="list-header">
+                <h2 id="completed-heading">Completed</h2>
+                <p id="completed-count" class="task-count" aria-live="polite"></p>
+            </div>
+            <ul id="completed-list" class="task-list"></ul>
+        </section>
+    </main>
 
     <script src="./script.js" defer></script>
 </body>
