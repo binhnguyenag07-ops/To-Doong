@@ -1,64 +1,55 @@
 package Service;
 
-
+import java.sql.SQLException;
 import java.util.List;
-
 import java.util.UUID;
 
+import Repository.TodoStore;
 import model.Todo;
 
-
-import Repository.TodoRepository;
-
 public class TodoService {
-    private TodoRepository repository;
+    private final TodoStore repository;
 
-    public TodoService(TodoRepository repository) {
+    public TodoService(TodoStore repository) {
         this.repository = repository;
     }
 
-    public Todo createTodo(String title) {
-        if(title == null || title.trim().isEmpty()) {
+    public Todo createTodo(String title) throws SQLException {
+        if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("This Title can not be empty");
         }
 
-        String id = UUID.randomUUID().toString();
-        Todo todo = new Todo(id,title.trim(),false);
+        Todo todo = new Todo(
+            UUID.randomUUID().toString(),
+            title.trim(),
+            false
+        );
 
         repository.save(todo);
         return todo;
     }
-    
-    public boolean updateTodo(String id, String newTitle) {
-        if(newTitle == null || newTitle.trim().isEmpty()) {
+
+    public boolean updateTodo(String id, String newTitle)
+            throws SQLException {
+
+        if (newTitle == null || newTitle.trim().isEmpty()) {
             throw new IllegalArgumentException("This Title can not be empty");
         }
-        Todo todo = repository.findByID(id);
 
-        if(todo == null) {
-            return false;
-        }
-
-        todo.setTitle(newTitle.trim());
-        return true;
+        return repository.updateTitle(id, newTitle.trim());
     }
 
-    public boolean setTodoCompleted(String id, boolean completed) {
-        Todo todo = repository.findByID(id);
+    public boolean setTodoCompleted(String id, boolean completed)
+            throws SQLException {
 
-        if(todo == null) {
-            return false;
-        }
-
-        todo.setCompleted(completed);
-        return true;
+        return repository.updateCompleted(id, completed);
     }
 
-    public boolean deleteTodo(String id) {
+    public boolean deleteTodo(String id) throws SQLException {
         return repository.deleteByID(id);
     }
 
-    public List<Todo> getAllTodos() {
+    public List<Todo> getAllTodos() throws SQLException {
         return repository.findAll();
     }
 }
